@@ -23,7 +23,6 @@ function changeColor() {
 
 function stopChangeColor() {
   clearInterval(timerID);
-  body.style.backgroundColor = '#fafafa';
   buttonStart.disabled = false;
   buttonStop.disabled = true;
 }
