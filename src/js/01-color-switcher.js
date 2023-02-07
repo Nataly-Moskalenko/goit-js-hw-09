@@ -3,8 +3,6 @@ import '../css/common.css';
 const body = document.querySelector('body');
 const buttonStart = document.querySelector('button[data-start]');
 const buttonStop = document.querySelector('button[data-stop]');
-let timerID = null;
-buttonStop.disabled = true;
 
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215)
@@ -27,5 +25,6 @@ function stopChangeColor() {
   buttonStop.disabled = true;
 }
 
+buttonStop.disabled = true;
 buttonStart.addEventListener('click', changeColor);
 buttonStop.addEventListener('click', stopChangeColor);
