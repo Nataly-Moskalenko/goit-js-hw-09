@@ -25,10 +25,10 @@ function handleSubmit(event) {
   for (let i = 0; i < Number(amount.value); i += 1) {
     createPromise(i + 1, Number(delay.value) + Number(step.value) * i)
       .then(value => {
-        Notiflix.Notify.info(value);        
+        Notiflix.Notify.success(value);
       })
       .catch(error => {
-        Notiflix.Notify.info(error);        
+        Notiflix.Notify.failure(error);
       });
   }
 }

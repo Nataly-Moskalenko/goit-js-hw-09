@@ -14,33 +14,41 @@ const options = {
   enableTime: true,
   dateFormat: 'Y-m-d H:i',
   time_24hr: true,
-  defaultDate: new Date(),
+  defaultDate: Date.now(),
   minuteIncrement: 1,
 
   onClose(selectedDates) {
-    const chooseDate = new Date(selectedDates[0]);
+    const chooseDate = new Date(selectedDates[0].getTime());
     const currentDate = options.defaultDate;
-    if (chooseDate.getTime() <= currentDate.getTime()) {
+
+    if (chooseDate <= currentDate) {
       buttonStart.disabled = true;
-      Notiflix.Notify.info('Please choose a date in the future');      
+      Notiflix.Notify.failure('Please choose a date in the future');
     } else {
       buttonStart.disabled = false;
-      const timerMs = chooseDate.getTime() - currentDate.getTime();
-      convertMs(timerMs);
+      addLeadingZero(convertMs(chooseDate - currentDate));
     }
   },
 };
 
 function convertMs(ms) {
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-  const days = Math.floor(ms / day);
-  const hours = Math.floor((ms % day) / hour);
-  const minutes = Math.floor(((ms % day) % hour) / minute);
-  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+  if (ms > 0) {
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    const days = Math.floor(ms / day);
+    const hours = Math.floor((ms % day) / hour);
+    const minutes = Math.floor(((ms % day) % hour) / minute);
+    const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
+    return { days, hours, minutes, seconds };
+  } else {
+    return { days: '00', hours: '00', minutes: '00', seconds: '00' };
+  }
+}
+
+function addLeadingZero({ days, hours, minutes, seconds }) {
   if (days <= 99) {
     daysValue.textContent = days.toString().padStart(2, '0');
   } else {
@@ -54,14 +62,15 @@ function convertMs(ms) {
 function startTimer() {
   buttonStart.disabled = true;
   datetimeValue.disabled = true;
-  const startTimerDate = new Date(datetimeValue.value).getTime();
- 
-  let timerId = setInterval(function () {
-    let now = new Date().getTime();
-    let distance = startTimerDate - now;
-    convertMs(distance);
 
-    if (distance < 1000) {
+  const startTimerDate = new Date(datetimeValue.value).getTime();
+  addLeadingZero(convertMs(startTimerDate - Date.now()));
+
+  const timerId = setInterval(() => {
+    let timer = startTimerDate - Date.now();
+    addLeadingZero(convertMs(timer));
+
+    if (timer < 1000) {
       clearInterval(timerId);
     }
   }, 1000);
