@@ -4,6 +4,8 @@ const body = document.querySelector('body');
 const buttonStart = document.querySelector('button[data-start]');
 const buttonStop = document.querySelector('button[data-stop]');
 
+let timerId = null;
+
 function getRandomHexColor() {
   return `#${Math.floor(Math.random() * 16777215)
     .toString(16)
@@ -12,7 +14,7 @@ function getRandomHexColor() {
 
 function changeColor() {
   body.style.backgroundColor = getRandomHexColor();
-  timerID = setInterval(() => {
+  timerId = setInterval(() => {
     body.style.backgroundColor = getRandomHexColor();
   }, 1000);
   buttonStart.disabled = true;
@@ -20,7 +22,7 @@ function changeColor() {
 }
 
 function stopChangeColor() {
-  clearInterval(timerID);
+  clearInterval(timerId);
   buttonStart.disabled = false;
   buttonStop.disabled = true;
 }

@@ -1,4 +1,5 @@
 import '../css/common.css';
+import Notiflix from 'notiflix/build/notiflix-notify-aio';
 
 const form = document.querySelector('.form');
 
@@ -24,10 +25,10 @@ function handleSubmit(event) {
   for (let i = 0; i < Number(amount.value); i += 1) {
     createPromise(i + 1, Number(delay.value) + Number(step.value) * i)
       .then(value => {
-        console.log(value);
+        Notiflix.Notify.info(value);        
       })
       .catch(error => {
-        console.log(error);
+        Notiflix.Notify.info(error);        
       });
   }
 }

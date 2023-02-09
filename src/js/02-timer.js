@@ -1,6 +1,7 @@
 import '../css/common.css';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix/build/notiflix-notify-aio';
 
 const buttonStart = document.querySelector('button[data-start]');
 const datetimeValue = document.querySelector('#datetime-picker');
@@ -21,7 +22,7 @@ const options = {
     const currentDate = options.defaultDate;
     if (chooseDate.getTime() <= currentDate.getTime()) {
       buttonStart.disabled = true;
-      alert('Please choose a date in the future');
+      Notiflix.Notify.info('Please choose a date in the future');      
     } else {
       buttonStart.disabled = false;
       const timerMs = chooseDate.getTime() - currentDate.getTime();
@@ -54,7 +55,8 @@ function startTimer() {
   buttonStart.disabled = true;
   datetimeValue.disabled = true;
   const startTimerDate = new Date(datetimeValue.value).getTime();
-  timerId = setInterval(function () {
+ 
+  let timerId = setInterval(function () {
     let now = new Date().getTime();
     let distance = startTimerDate - now;
     convertMs(distance);
